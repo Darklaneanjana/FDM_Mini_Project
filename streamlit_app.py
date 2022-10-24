@@ -1,4 +1,8 @@
 import streamlit as st
+#chage width in streamlit app
+
+
+
 import numpy as np
 import pandas as pd
 from tensorflow import keras
@@ -47,7 +51,7 @@ def newUserPredict(user_vec):
 
 
 def existingUserPredict(uid):
-       user_train2 = pd.read_csv("userVector.csv").astype('float64')
+       user_train2 = pd.read_csv("data/userVector.csv").astype('float64')
        user_train2 = user_train2.loc[user_train2['userId'] == uid]
        user_train2 = pd.DataFrame(np.repeat(user_train2.values, item_train1.shape[0], axis=0), columns=user_train2.columns) 
        user_train2.head()
@@ -88,10 +92,14 @@ def existingUserPredict(uid):
 
        sorted_items.insert(2, 'genre', user_genre_ave)
 
-       st.write(sorted_items.iloc[:10])
+       return(sorted_items.iloc[:10])
+
+
+
 
 
 st.write('# Content Based Movie Recommender System')
+st.write('<br>' , unsafe_allow_html=True)
 st.write('## Predictions for a new user')
 options = st.multiselect('Select Your Favourite ',categories,['Action', 'Adventure'])
 # st.write('You selected:', options)
@@ -101,41 +109,61 @@ user_vec = {'userId':0, 'userRatingCount':0, 'userAvgRating':0, 'Action':0, 'Adv
               'Animation':0, 'Children':0, 'Comedy':0, 'Crime':0, 'Documentary':0, 'Drama':0,
               'Fantasy':0, 'Film-Noir':0, 'Horror':0, 'IMAX':0, 'Musical':0, 'Mystery':0,
               'Romance':0, 'Sci-Fi':0, 'Thriller':0, 'War':0, 'Western':0}
-
 htp5= 'https://img.omdbapi.com/?apikey=a50d9a01&i=tt'
 
-
-
 if newButton:
-       for i in options:
-              user_vec[i] = 5
-       moviesn = newUserPredict(user_vec)
-       # st.write(moviesn)
-       
-       for i in range(len(moviesn)):
-              with st.container():
-                     row = moviesn.iloc[i].values.tolist()
-                     imdbID = links.loc[links['movieId'] == row[0]].values.tolist()[0][1]
-                     imdbID = str(int(imdbID)).zfill(7)
-                     col1, col2 = st.columns([2,5])
+       with st.spinner('Wait for it...'):
+              for i in options:
+                     user_vec[i] = 5
+              moviesn = newUserPredict(user_vec)
+              # st.write(moviesn)
+              
+              for i in range(len(moviesn)):
+                     with st.container():
+                            row = moviesn.iloc[i].values.tolist()
+                            imdbID = links.loc[links['movieId'] == row[0]].values.tolist()[0][1]
+                            imdbID = str(int(imdbID)).zfill(7)
+                            col1, col2 = st.columns([2,5])
 
-                     with col1:
-                            st.image(htp5+imdbID, width=150)
-                     with col2:
-                            st.write(f'''<h3>{row[2]}</h3>
-                                          {row[3]}<br>
-                                          {round(row[4],1)}
-                            ''', unsafe_allow_html=True)
+                            with col1:
+                                   st.image(htp5+imdbID, width=150)
+                            with col2:
+                                   st.write(f'''<h3>{row[2]}</h3>
+                                                 {row[3]}<br>
+                                                 {round(row[4],1)}
+                                   ''', unsafe_allow_html=True)
+       st.balloons()
 
-       
+
+
+def displayUserRow(uid):
+       rowe = user_train2.loc[user_train2['userId'] == uid].iloc[:,1:]
+       # rowe = round(rowe,1)
+       hide_table_row_index = """
+              <style>
+              thead tr th:first-child {display:none}
+              tbody th {display:none}
+              </style>
+            """
+       # Inject CSS with Markdown
+       st.markdown(hide_table_row_index, unsafe_allow_html=True)
+       # Display an interactive table
+       st.table(rowe.style.format("{:.1f}"))
+
+
+
+st.write('<br><br>' , unsafe_allow_html=True)
 st.write('## Predictions for an existing user')
 
 uid = 1
 st.text_input('Enter User Id' ,uid ,key="placeholder")
 uid = int(st.session_state.placeholder)
-st.write(user_train2.loc[user_train2['userId'] == uid])
+displayUserRow(uid)
+
 existingButton = st.button('Predict_for_existing_user')
 if existingButton:
-       moviese = existingUserPredict(uid)
-       st.write(moviese)
+       with st.spinner('Wait for it...'):
+              moviese = existingUserPredict(uid)
+              st.write(moviese)
+       st.balloons()
 
