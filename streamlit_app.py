@@ -1,3 +1,4 @@
+from cgitb import small
 import streamlit as st
 #chage width in streamlit app
 
@@ -132,11 +133,12 @@ if newButton:
                                                  {row[3]}<br>
                                                  {round(row[4],1)}
                                    ''', unsafe_allow_html=True)
-       st.balloons()
+
 
 
 
 def displayUserRow(uid):
+       
        rowe = user_train2.loc[user_train2['userId'] == uid].iloc[:,1:]
        # rowe = round(rowe,1)
        hide_table_row_index = """
@@ -147,7 +149,7 @@ def displayUserRow(uid):
             """
        # Inject CSS with Markdown
        st.markdown(hide_table_row_index, unsafe_allow_html=True)
-       # Display an interactive table
+       st.text('Selected users genre preferences')
        st.table(rowe.style.format("{:.1f}"))
 
 
@@ -165,5 +167,20 @@ if existingButton:
        with st.spinner('Wait for it...'):
               moviese = existingUserPredict(uid)
               st.write(moviese)
-       st.balloons()
+              st.write('<br>' , unsafe_allow_html=True)
+       for i in range(len(moviese)):
+                     with st.container():
+                            row = moviese.iloc[i].values.tolist()
+                            imdbID = links.loc[links['movieId'] == row[0]].values.tolist()[0][1]
+                            imdbID = str(int(imdbID)).zfill(7)
+                            col1, col2 = st.columns([2,5])
+
+                            with col1:
+                                   st.image(htp5+imdbID, width=150)
+                            with col2:
+                                   st.write(f'''<h3>{row[3]}</h3>
+                                                 {row[4]}<br>
+                                                 {round(row[5],1)}
+                                   ''', unsafe_allow_html=True)
+
 
