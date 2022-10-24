@@ -83,14 +83,13 @@ def existingUserPredict(uid):
        user_genre_ave = []
        try:
               for i in range(len(genres)):
-                     if genres[i] != ['(no genres listed)']:
-                            user_genre_ave.append(user_train2.iloc[uid][genres[i]].values.round(1)) 
+                     if genres.iloc[i] != ['(no genres listed)']:
+                            user_genre_ave.append(user_train2.iloc[uid][genres.iloc[i]].values.round(1)) 
                      else:
                             user_genre_ave.append(0)
        except Exception as e:
               print(genres[i])
               print(e)
-
        sorted_items.insert(2, 'genre', user_genre_ave)
 
        return(sorted_items.iloc[:10])
