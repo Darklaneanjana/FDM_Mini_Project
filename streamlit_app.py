@@ -122,9 +122,10 @@ if newButton:
                      with col1:
                             st.image(htp5+imdbID, width=150)
                      with col2:
-                            st.write(f'## {row[2]}')
-                            st.write(f'#### {row[3]}')
-                            st.write(f'#### {row[4]}')
+                            st.write(f'''<h3>{row[2]}</h3>
+                                          {row[3]}<br>
+                                          {round(row[4],1)}
+                            ''', unsafe_allow_html=True)
 
        
 st.write('## Predictions for an existing user')
