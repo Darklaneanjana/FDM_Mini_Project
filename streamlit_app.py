@@ -15,7 +15,7 @@ user_train2 = pd.read_csv("data/userVector.csv").astype('float64')
 links = pd.read_csv('dataset/links.csv')
 
 #loading the model and scalers
-model = keras.models.load_model('my_model')
+model = keras.models.load_model('data/my_model')
 scalerUser=load('data/scalerUser.bin')
 scalerItem=load('data/scalerItem.bin')
 scalerTarget=load('data/scalerTarget.bin')
