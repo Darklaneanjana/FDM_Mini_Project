@@ -4,3 +4,4 @@ numpy
 joblib
 tensorflow
 tabulate
+streamlit
