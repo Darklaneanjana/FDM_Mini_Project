@@ -22,3 +22,6 @@ Dataset :-  <https://grouplens.org/datasets/movielens/latest>
   4) 
   5) 
   6) 
+
+to install libraries
+pip install -r requirements.txt

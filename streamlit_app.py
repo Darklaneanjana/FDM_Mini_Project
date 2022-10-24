@@ -7,7 +7,6 @@ st.title("Nadeesh naluwa")
 st.write("This is a streamlit app")
 
 
-
 #print the version of streamlit
 st.write(st.__version__)
 
