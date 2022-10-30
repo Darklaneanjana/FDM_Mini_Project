@@ -130,3 +130,9 @@ dmypy.json
 
 dataset2/
 1.csv
+
+/dataset2
+/data2
+
+a.ipynb
+.vscode/

@@ -5,3 +5,4 @@ joblib
 tensorflow
 tabulate
 streamlit
+pyarrow
