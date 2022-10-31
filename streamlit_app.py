@@ -1,6 +1,7 @@
+from altair.vegalite.v4.schema import Color
 import streamlit as st
 from streamlit_option_menu import option_menu
-# import streamlit.components.v1 as components
+import requests
 
 import numpy as np
 import pandas as pd
@@ -46,7 +47,7 @@ def newUserPredict(user_vec):
        # sorted_items['rating'] = sorted_ypu
        sorted_items.insert(1, 'y_predict', sorted_ypu)
 
-       return(sorted_items.iloc[:10])
+       return(sorted_items.iloc[:100])
 
 # function to display the movie row for existing users
 def existingUserPredict(uid):
@@ -90,11 +91,15 @@ def existingUserPredict(uid):
               print(e)
        sorted_items.insert(2, 'genre', user_genre_ave)
 
-       return(sorted_items.iloc[:10])
+       return(sorted_items.iloc[:100])
 
-st.write('<style>div.block-container{padding-top:2rem;}</style>', unsafe_allow_html=True)
+# Title and sidebar paddings
+st.markdown("""
+       <style>div.block-container{padding-top:2rem;max-width :950px}</style>
+       <style>.css-128j0gw {margin-top: -40px;}</style>
+       """, unsafe_allow_html=True)
 
-
+# Sidebar
 with st.sidebar:
        selected = option_menu(
               menu_title='Select the user type',
@@ -103,60 +108,53 @@ with st.sidebar:
               icons=['person', 'people'],
               menu_icon='bars',
        )
-       st.text('paka')
+       st.write('''
+              <br>
+              <p style = "color:LightSeaGreen;" >
+              The model is a deep learning model that uses a neural network to predict the rating of a movie for a user. The model is trained on the <a href="https://grouplens.org/datasets/movielens/">MovieLens</a> dataset. The dataset contains 100,836 ratings and 3,706 tag applications applied to 9,742 movies by 610 users. The dataset was generated on October 17, 2019. It was created by GroupLens Research at the University of Minnesota.</p>
+                 
+              ## How to use the app
+              - Select the user type
+              - For new users, enter the user vector
+              - For existing users, select the user id
+              - Click on the predict button
+              - The top 10 movies will be displayed
 
+              <br>
+              <p style = "color:LightSeaGreen;" >
+              The images and other details are from <a href="https://www.imdb.com/">Internet Movie Database</a></p>
+       ''', unsafe_allow_html=True)
 
-
-
-st.write('# Content Based Movie Recommender System')
-st.write('<br>' , unsafe_allow_html=True)
-
-
-
-if selected== 'New User':
-       st.write('## Predictions for a new user')
-       options = st.multiselect('Select Your Favourite ',categories,['Action', 'Adventure'])
-       # st.write('You selected:', options)
-       newButton = st.button('Predict_for_new_user')
-       user_vec = {'userId':0, 'userRatingCount':0, 'userAvgRating':0, 'Action':0, 'Adventure':0,
-                     'Animation':0, 'Children':0, 'Comedy':0, 'Crime':0, 'Documentary':0, 'Drama':0,
-                     'Fantasy':0, 'Film-Noir':0, 'Horror':0, 'IMAX':0, 'Musical':0, 'Mystery':0,
-                     'Romance':0, 'Sci-Fi':0, 'Thriller':0, 'War':0, 'Western':0}
-       htp5= 'https://img.omdbapi.com/?apikey=a50d9a01&i=tt'
-
-       if newButton:
-              with st.spinner('Wait for it...'):
-                     for i in options:
-                            user_vec[i] = 5
-                     moviesn = newUserPredict(user_vec)
-                     # st.write(moviesn)
-                     
-                     for i in range(len(moviesn)):
+# Display Movie List
+def displayMovies(movies,j=0):
+       for i in range(len(movies)):
                             with st.container():
-                                   row = moviesn.iloc[i].values.tolist()
+                                   row = movies.iloc[i].values.tolist()
                                    imdbID = links.loc[links['movieId'] == row[0]].values.tolist()[0][1]
                                    imdbID = str(int(imdbID)).zfill(7)
-                                   col1, col2 = st.columns([2,5])
+                                   response = requests.get(imdbLink+imdbID).json()
+                                   col1, col2, col3 = st.columns([2,4,3])
 
                                    with col1:
                                           st.image(htp5+imdbID, width=150)
                                    with col2:
-                                          st.write(f'''<h3>{row[2]}</h3>
-                                                        {row[3]}<br>
-                                                        {round(row[4],1)}
-                                          ''', unsafe_allow_html=True)
-                                          with st.expander(""):
-                                                 st.write("""
-                                                        The chart above shows some numbers I picked for you.
-                                                        I rolled actual dice for these, so they're *guaranteed* to
-                                                        be random.
-                                                 """)
-                                                 st.image("https://static.streamlit.io/examples/dice.jpg")
-
-
-
-def displayUserRow(uid):
+                                          st.write(f'''
+                                          <h3>{row[2+j]}</h3>
+                                                        {row[3+j]}<br>
+                                                        Rating:  {round(row[4+j],1)}
+                                                 ''', unsafe_allow_html=True)
+                                   with col3:
+                                          st.markdown(f'''
+                                                 <p style = "color:LightSeaGreen;" >
+                                                 {response.get('Plot')}
+                                                 <br><br>
+                                                 Actors: {response.get('Actors')}
+                                                 </p>
+                                                 ''', unsafe_allow_html=True)
+                            st.markdown('<hr>', unsafe_allow_html=True)
        
+# Display user Vector
+def displayUserRow(uid):   
        rowe = user_train2.loc[user_train2['userId'] == uid].iloc[:,1:]
        # rowe = round(rowe,1)
        hide_table_row_index = """
@@ -167,37 +165,65 @@ def displayUserRow(uid):
             """
        # Inject CSS with Markdown
        st.markdown(hide_table_row_index, unsafe_allow_html=True)
-       st.text('Selected users genre preferences')
+       st.text('Selected user\'s Genre preferences')
        st.table(rowe.style.format("{:.1f}"))
 
+# Main
+st.write('<h1 style = "font-family:serif;font-size:46px;" >Content Based Movie Recommender System</h1>', unsafe_allow_html=True)
+st.write('<br>' , unsafe_allow_html=True)
 
+htp5= 'https://img.omdbapi.com/?apikey=a50d9a01&i=tt'
+imdbLink = 'http://www.omdbapi.com/?apikey=a50d9a01&i=tt'
+user_vec = {'userId':0, 'userRatingCount':0, 'userAvgRating':0, 'Action':0, 'Adventure':0,
+                     'Animation':0, 'Children':0, 'Comedy':0, 'Crime':0, 'Documentary':0, 'Drama':0,
+                     'Fantasy':0, 'Film-Noir':0, 'Horror':0, 'IMAX':0, 'Musical':0, 'Mystery':0,
+                     'Romance':0, 'Sci-Fi':0, 'Thriller':0, 'War':0, 'Western':0}
+
+# New User
+if selected== 'New User':
+       st.write('## Predictions for a new user')
+       st.write('<br>', unsafe_allow_html=True)
+       options = st.multiselect('Select Your Favourites',categories,['Action', 'Adventure'])
+       # st.write('You selected:', options)
+
+       col, buff2 = st.columns([2,4])
+       # col.text_input('smaller text window:')
+       end =   col.number_input('Enter Movies per predict' , min_value=10, max_value=len(movies), step=10)
+       newButton = st.button('Predict for me')
+
+       if newButton:
+              with st.spinner('Beep Boop I\'m Thinking...'):
+                     for i in options:
+                            user_vec[i] = 5
+                     movies = newUserPredict(user_vec)
+                     st.markdown('<br>', unsafe_allow_html=True)
+                     displayMovies(movies[0:end],0)
+
+
+# Existing User
 if selected== 'Existing Users':
        st.write('## Predictions for an existing user')
 
-       uid = 1
-       st.text_input('Enter User Id' ,uid ,key="placeholder")
-       uid = int(st.session_state.placeholder)
+       # uid = 1
+       uid = st.number_input('Enter User Id' , min_value=1, max_value=len(user_train2), step=1)
+       uid = int(uid)
        displayUserRow(uid)
+       
 
-       existingButton = st.button('Predict_for_existing_user')
+       col1, col2 = st.columns([2,4])
+       # col.text_input('smaller text window:')
+       end =   col2.number_input('Enter Movies per predict' , min_value=10, max_value=len(movies), step=10)
+       agree = col1.checkbox('Show me the dataframe of movie predictions')
+       st.markdown('<br>', unsafe_allow_html=True)
+       existingButton = st.button('Predict for existing user')
+
        if existingButton:
-              with st.spinner('Wait for it...'):
-                     moviese = existingUserPredict(uid)
-                     st.write(moviese)
-                     st.write('<br>' , unsafe_allow_html=True)
-              for i in range(len(moviese)):
-                            with st.container():
-                                   row = moviese.iloc[i].values.tolist()
-                                   imdbID = links.loc[links['movieId'] == row[0]].values.tolist()[0][1]
-                                   imdbID = str(int(imdbID)).zfill(7)
-                                   col1, col2 = st.columns([2,5])
-
-                                   with col1:
-                                          st.image(htp5+imdbID, width=150)
-                                   with col2:
-                                          st.write(f'''<h3>{row[3]}</h3>
-                                                        {row[4]}<br>
-                                                        {round(row[5],1)}
-                                          ''', unsafe_allow_html=True)
-
-
+              with st.spinner('Beep Boop I\'m Thinking...'):
+                     try:
+                            movies = existingUserPredict(uid)
+                            if agree:
+                                   st.write(movies)
+                            st.write('<br>' , unsafe_allow_html=True)
+                            displayMovies(movies[0:end],1)
+                     except:
+                            st.error('An Error Accured. Please check the user id')
