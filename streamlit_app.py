@@ -122,7 +122,7 @@ with st.sidebar:
 
               <br>
               <p style = "color:LightSeaGreen;" >
-              The images and other details are from <a href="https://www.imdb.com/">Internet Movie Database</a></p>
+              The images and other details are fetched from <a href="https://www.imdb.com/">Internet Movie Database</a></p>
        ''', unsafe_allow_html=True)
 
 # Display Movie List
