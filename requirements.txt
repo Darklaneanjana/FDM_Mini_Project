@@ -4,5 +4,6 @@ numpy
 joblib
 tensorflow
 tabulate
-streamlit
 pyarrow
+streamlit
+streamlit-option-menu
