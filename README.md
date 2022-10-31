@@ -8,12 +8,13 @@ The main dataset is from MovieLens contains 27,000,000 ratings and 1,100,000 tag
 Document - <https://mysliit.sharepoint.com/:w:/s/FDMMiniProject22/EcBvys2HgtBMmZbxeu9GtkEB18BtzlEBWy3Su4Tih4YDJw?e=0dymJ1><br>
 APP link :- <https://darklaneanjana-fdm-mini-project-streamlit-app-p6gs5a.streamlitapp.com><br>
 Dataset :-  <https://grouplens.org/datasets/movielens/latest>
-
+<br>
 ### Problem background:
 *******************************************************************
 
+<br>
 
-### Built With
+## Built With
 
 This section shows the list of major frameworks that we have used to  built our project . 
 * Language : [Python 3.10](https://www.python.org/)
@@ -28,19 +29,22 @@ This section shows the list of major frameworks that we have used to  built our 
 <p align="center"><a href="https://www.tensorflow.org/" target="_blank"><img src="https://www.gstatic.com/devrel-devsite/prod/vbad39f885886bc440e53563b954be5bc119ad9455e9fd347968d0509a569587a/tensorflow/images/lockup.svg" width="300"></a></p>
 
 
+<br>
+
 <!-- GETTING STARTED -->
 ## Getting Started
 
 In order to be fully funtional and uprunning the following should be followed
 
-### Prerequisites
+## Prerequisites
 
 The following requirements should be fullfilled
 * Python 3.10 install
 * Creating a Python virtual environment to install python modules
 
-### Installation
+<br>
 
+## Installation
 
 1. Clone the repository
    ```sh
@@ -57,7 +61,7 @@ The following requirements should be fullfilled
    streamlit run streamlit_app.py
    ```
 
-
+<br>
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -70,6 +74,8 @@ Contributions are what make the open source community such an amazing place to b
 4. Push to the Branch <br>`git push origin feature/AmazingFeature`
 5. Open a Pull Request
 
+
+<br>
 <p align="center"><a href="https://www.sliit.lk/" target="_blank"><img src="https://university.gamer.lk/wp-content/uploads/2019/06/sliit.png" width="400"></a></p>
 
 This is a project done for the Information Technology project module of BSc.(Hons.) Degree in Information Technology in Sri Lanka Institute of Information Technology
