@@ -22,11 +22,11 @@ This section shows the list of major frameworks that we have used to  built our 
 <img src="https://www.python.org/static/img/python-logo@2x.png" width="350"></a></p>
 
 
-* Web-framework : [Flask 2.0](https://streamlit.io/)
-<p align="center"><a href="https://streamlit.io/" target="_blank"><img src="https://streamlit.io/images/brand/streamlit-logo-primary-colormark-lighttext.png" width="300"></a></p>
+* App framework : [Streamlit 2.0](https://streamlit.io/)
+<p align="center"><a href="https://streamlit.io/" target="_blank"><img src="https://streamlit.io/images/brand/streamlit-logo-primary-colormark-lighttext.png" width="340"></a></p>
 
-* Graph/Plottings : [TensorFlow](https://www.tensorflow.org/)
-<p align="center"><a href="https://www.tensorflow.org/" target="_blank"><img src="https://www.gstatic.com/devrel-devsite/prod/vbad39f885886bc440e53563b954be5bc119ad9455e9fd347968d0509a569587a/tensorflow/images/lockup.svg" width="300"></a></p>
+* DNN Engine : [TensorFlow](https://www.tensorflow.org/)
+<p align="center"><a href="https://www.tensorflow.org/" target="_blank"><img src="https://www.gstatic.com/devrel-devsite/prod/vbad39f885886bc440e53563b954be5bc119ad9455e9fd347968d0509a569587a/tensorflow/images/lockup.svg" width="350"></a></p>
 
 
 <br>
