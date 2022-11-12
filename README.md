@@ -78,4 +78,4 @@ Contributions are what make the open source community such an amazing place to b
 <br>
 <p align="center"><a href="https://www.sliit.lk/" target="_blank"><img src="https://university.gamer.lk/wp-content/uploads/2019/06/sliit.png" width="400"></a></p>
 
-This is a project done for the Information Technology project module of BSc.(Hons.) Degree in Information Technology in Sri Lanka Institute of Information Technology
+This is a project done for the Fundamentals of Data Mining module of BSc (Hons) in Information Technology Specialising in Data Science, in Sri Lanka Institute of Information Technology
