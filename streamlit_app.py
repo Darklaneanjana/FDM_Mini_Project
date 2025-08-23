@@ -1,4 +1,4 @@
-from altair.vegalite.v4.schema import Color
+# from altair.vegalite.v4.schema import Color
 import streamlit as st
 from streamlit_option_menu import option_menu
 import requests
